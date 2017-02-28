@@ -281,7 +281,7 @@ def bandsJSON():
 @app.route('/')
 @app.route('/bands/')
 def showBands():
-    bands = session.query(Band).order_by(asc(Band.name))
+    bands = session.query(Band).order_by(Band.name.desc())
     if 'username' not in login_session:
         return render_template('publicbands.html', bands=bands)
     else:
