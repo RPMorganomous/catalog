@@ -1,14 +1,40 @@
-# OAuth2.0
-Starter Code for Auth&amp;Auth course
-# Installing the Vagrant VM for ud330 - Authentication & Authorization
+#Classic Rock Hall Of Fame Catalog
 
-**Note: If you already have a vagrant machine installed from previous Udacity courses skip to the 'Fetch the Source Code and VM Configuration' section**
+##Main technologies and methodologies implemented:
+* Python 2.7
+* Flask
+* Bootstrap
+* SQLAlchemy
+* sqlite
+* JSON
+* CRUD
+* HTML
+* CSS
+* OAuth
+* Vagrant Virtual Machine
+* Google API
+* Facebook API
 
-In Lessons 2,3 and 4 of this course, you'll use a virtual machine (VM) to run a web server and a web app that uses it. The VM is a Linux system that runs on top of your own machine.  You can share files easily between your computer and the VM.
+This catalog project is a Python module that uses an sqlite database to manage bands and albums from the classic rock genre.  The purpose of this project is to demonstrate aptitude with Create Read Update and Delete database functionality.
 
-We're using the Vagrant software to configure and manage the VM. Here are the tools you'll need to install to get it running:
+The program is tested by executing project.py.  If all goes well, when you open your browser and point to localhost:8000 you will see this:
 
-### Git
+![alt tag](https://github.com/RPMorganomous/catalog/blob/master/static/screenshot.png)
+
+#Follow These Steps To Test The Program
+(I'm assuming you already have python2.7 installed)
+
+###Install Virtualbox###
+https://www.virtualbox.org/wiki/Downloads
+
+###Install Vagrant###
+https://www.vagrantup.com/downloads
+
+Verify that Vagrant is installed and working by typing in the terminal:
+
+    $ vagrant -v   # will print out the Vagrant version number
+
+###Clone the Repository###
 
 If you don't already have Git installed, [download Git from git-scm.com.](http://git-scm.com/downloads) Install the version for your operating system.
 
@@ -17,22 +43,35 @@ On Windows, Git will provide you with a Unix-style terminal and shell (Git Bash)
 
 You will need Git to install the configuration for the VM. If you'd like to learn more about Git, [take a look at our course about Git and Github](http://www.udacity.com/course/ud775).
 
-### VirtualBox
+Once you are sure that VirtualBox and Vagrant are installed correctly execute the following:
+
+    $ git clone https://github.com/RPMorganomous/catalog.git
+    $ cd vagrant
+    $ cd catalog
+
+###Verify that these files exist in the newly cloned repository:
+
+    --catalog                    #folder containing tournament files
+    ----project.py               #file that contains the python functions which 
+                                    unit tests will run on
+    ----band_database_setup.py   #unit tests for tournament.py
+    ----bandalbumswithusers.db   #sqlite database
+    --Vagrantfile                #template that launches the Vagrant environment
+    --pg_config.sh               #shell script provisioner called by Vagrantfile
+                                    that performs configurations
+
+###Launch the Vagrant Box###
 
 VirtualBox is the software that actually runs the VM. [You can download it from virtualbox.org, here.](https://www.virtualbox.org/wiki/Downloads)  Install the *platform package* for your operating system.  You do not need the extension pack or the SDK. You do not need to launch VirtualBox after installing it.
 
 **Ubuntu 14.04 Note:** If you are running Ubuntu 14.04, install VirtualBox using the Ubuntu Software Center, not the virtualbox.org web site. Due to a [reported bug](http://ubuntuforums.org/showthread.php?t=2227131), installing VirtualBox from the site may uninstall other software you need.
 
-### Vagrant
-
+    $ vagrant up   #to launch and provision the vagrant environment
+    $ vagrant ssh  #to login to your vagrant environment
+    
 Vagrant is the software that configures the VM and lets you share files between your host computer and the VM's filesystem.  [You can download it from vagrantup.com.](https://www.vagrantup.com/downloads) Install the version for your operating system.
 
 **Windows Note:** The Installer may ask you to grant network permissions to Vagrant or make a firewall exception. Be sure to allow this.
-
-## Fetch the Source Code and VM Configuration
-
-**Windows:** Use the Git Bash program (installed with Git) to get a Unix-style terminal.  
-**Other systems:** Use your favorite terminal program.
 
 From the terminal, run:
 
@@ -44,17 +83,47 @@ This will give you a directory named **oauth** complete with the source code for
 
 Using the terminal, change directory to oauth (**cd oauth**), then type **vagrant up** to launch your virtual machine.
 
+###Change Directory To The Catalog Directory###
 
-## Running the Restaurant Menu App
-Once it is up and running, type **vagrant ssh**. This will log your terminal into the virtual machine, and you'll get a Linux shell prompt. When you want to log out, type **exit** at the shell prompt.  To turn the virtual machine off (without deleting anything), type **vagrant halt**. If you do this, you'll need to run **vagrant up** again before you can log into it.
+    $ cd /
+    $ cd vagrant
+    $ cd catalog
+
+###Initialize the database### 
+
+(Optional unless you want to use the pre-configured database.  Otherwise, you can delete bandalbumswithusers.db and recreate it using the following commands)
+
+    $ python band_database_setup.py     #creates the database
+    $ python lotsofalbums.py            #import a dummy user and the first three bands with albums into the database 
+                                        (note that if you wish to have permission to edit these three, you must run the
+                                        server and log in using the next steps BEFORE importing the database)
+You should see this result:
+
+    Bands and albums successfully imported!
+
+###Run the application###
+
+    $ python project.py
+
+    Open your browser and point to localhost:8000
+    Use the LOGIN option at the upper right of your screen to log in using Google or Facebook.  Upon first login you will
+    be added as a new user with permission to edit any bands or albums you create.
+
+###Shutdown the application###
+
+    ctrl+C
+
+###Shutdown Vagrant machine###
+
+    $ vagrant halt
 
 
-Now that you have Vagrant up and running type **vagrant ssh** to log into your VM.  change to the /vagrant directory by typing **cd /vagrant**. This will take you to the shared folder between your virtual machine and host machine.
+###Destroy the Vagrant machine###
 
-Type **ls** to ensure that you are inside the directory that contains project.py, database_setup.py, and two directories named 'templates' and 'static'
+    $ vagrant destroy
 
-Now type **python database_setup.py** to initialize the database.
+###Coming Soon - UPGRADES###
+* More detail on bands and albums
+* Gear and performance tips to reproduce the music you love
+* Option to order the albums from Amazon.com
 
-Type **python lotsofmenus.py** to populate the database with restaurants and menu items. (Optional)
-
-Type **python project.py** to run the Flask web server. In your browser visit **http://localhost:5000** to view the restaurant menu app.  You should be able to view, add, edit, and delete menu items and restaurants.
