@@ -253,7 +253,7 @@ def gdisconnect():
         return response
 
 
-# JSON APIs to view Band Information
+# JSON APIs to view Band and Album Information
 @app.route('/band/<int:band_id>/albums/JSON')
 def bandAlbumsJSON(band_id):
     band = session.query(Band).filter_by(id=band_id).one()
@@ -261,11 +261,15 @@ def bandAlbumsJSON(band_id):
     return jsonify(AlbumItems=[i.serialize for i in albums])
 
 
-@app.route('/band/<int:band_id>/menu/<int:album_id>/JSON')
-def AlbumItemJSON(band_id, album_id):
+@app.route('/album/<int:album_id>/JSON')
+def albumItemJSON(album_id):
     Album_Item = session.query(AlbumItem).filter_by(id=album_id).one()
     return jsonify(Album_Item=Album_Item.serialize)
 
+@app.route('/albums/JSON')
+def albumsJSON():
+    albums = session.query(AlbumItem).all()
+    return jsonify(albums=[r.serialize for r in albums])
 
 @app.route('/bands/JSON')
 def bandsJSON():

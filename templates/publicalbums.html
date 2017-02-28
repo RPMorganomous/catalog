@@ -43,10 +43,13 @@
 		<div class="row">
 			<div class="col-md-1"></div>
 			<div class="col-md-3">
-				<h2>Roots</h2>
+				<h2>Roots Era</h2>
 					{% for i in albums %}
 						{% if i.era == 'Roots' %}
 							<div class="menu-item">
+						<figure class="bandpic">
+							<img src="{{ i.picture }}">
+						</figure>
 								<h3>{{i.name}}</h3>
 								<p>{{i.description}}</p>
 								<p class="menu-price">{{i.price}}</p>
@@ -56,10 +59,13 @@
 					{% endfor %}
 			</div>
 			<div class="col-md-4">
-				<h2>Peak</h2>
+				<h2>Peak Era</h2>
 					{% for i in albums %}
 						{% if i.era == 'Peak' %}
 						<div class="menu-item">
+						<figure class="bandpic">
+							<img src="{{ i.picture }}">
+						</figure>
 							<h3>{{i.name}}</h3>
 							<p>{{i.description}}</p>
 							<p class="menu-price">{{i.price}}</p>
@@ -69,10 +75,13 @@
 					{% endfor %}
 			</div>
 			<div class="col-md-3">
-				<h2>Swan-Song</h2>
+				<h2>Swan-Song Era</h2>
 					{% for i in albums %}
 						{% if i.era == 'Swan-Song' %}
 						<div class="menu-item">
+						<figure class="bandpic">
+							<img src="{{ i.picture }}">
+						</figure>
 							<h3>{{i.name}}</h3>
 							<p>{{i.description}}</p>
 							<p class="menu-price">{{i.price}}</p>
@@ -80,10 +89,13 @@
 						</div>
 						{% endif %}
 					{% endfor %}
-				<h2>Reformation</h2>
+				<h2>Reformation Era</h2>
 					{% for i in albums %}
 						{% if i.era == 'Reformation' %}
 						<div class="menu-item">
+						<figure class="bandpic">
+							<img src="{{ i.picture }}">
+						</figure>
 							<h3>{{i.name}}</h3>
 							<p>{{i.description}}</p>
 							<p class="menu-price">{{i.price}}</p>

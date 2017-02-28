@@ -19,367 +19,147 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 
-# Create dummy user
+Create dummy user
 User1 = User(name="Metal Hunger", email="hungry@metal.com",
              picture='http://thekatynews.com/wp-content/uploads/2016/08/HSO-ROLLING-STONES.jpg')
 session.add(User1)
 session.commit()
 
-# Menu for UrbanBurger
-band1 = Band(user_id=1, name="Urban Burger Band")
+# Band profile for Led Zeppelin
+band1 = Band(user_id=1, name="Led Zeppelin", description="Led Zeppelin were an English rock band formed in London in 1968. The group consisted of guitarist Jimmy Page, singer Robert Plant, bassist and keyboardist John Paul Jones, and drummer John Bonham.", picture="https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/LedZeppelinmontage.jpg/250px-LedZeppelinmontage.jpg")
 
 session.add(band1)
 session.commit()
 
-albumItem2 = AlbumItem(user_id=1, name="Veggie Burger", description="Juicy grilled veggie patty with tomato mayo and lettuce",
-                     price="$7.50", era="Peak", band=band1)
-
-session.add(albumItem2)
-session.commit()
-
-
-albumItem1 = AlbumItem(user_id=1, name="French Fries", description="with garlic and parmesan",
-                     price="$2.99", era="Roots", band=band1)
-
+albumItem1 = AlbumItem(user_id=1, name="Led Zeppelin", description="Featuring integral contributions from each of the group's four members, the album was recorded in October 1968 at Olympic Studios in London and established their fusion style of both blues and rock music.", price="$19.95", era="Roots", band=band1, year="1969", picture="https://coverartarchive.org/release-group/0f18ec88-aa87-38a9-8a65-f03d81763560/front.jpg")
 session.add(albumItem1)
 session.commit()
 
-albumItem2 = AlbumItem(user_id=1, name="Chicken Burger", description="Juicy grilled chicken patty with tomato mayo and lettuce",
-                     price="$5.50", era="Peak", band=band1)
 
+albumItem2 = AlbumItem(user_id=1, name="Led Zeppelin II", description="Incorporating several elements of blues and folk music, Led Zeppelin II exhibited the band's evolving musical style of blues-derived material and their guitar riff-based sound. It has been described as the band's heaviest album.", price="$19.95", era="Roots", band=band1, year="1969", picture="https://coverartarchive.org/release-group/33b4653d-006e-3cc1-8afb-386b15a6cd6e/front.jpg")
 session.add(albumItem2)
 session.commit()
 
-albumItem3 = AlbumItem(user_id=1, name="Chocolate Cake", description="fresh baked and served with ice cream",
-                     price="$3.99", era="Swan-Song", band=band1)
-
+albumItem3 = AlbumItem(user_id=1, name="Led Zeppelin III", description="This album represented a maturing of the band's music towards a greater emphasis on folk and acoustic sounds. It is widely acknowledged for showing that Led Zeppelin were more than just a conventional rock band.", price="$19.95", era="Roots", band=band1, year="1970", picture="https://coverartarchive.org/release-group/53f80f76-f8af-3558-bfd5-e7221e055c75/front.jpg")
 session.add(albumItem3)
 session.commit()
 
-albumItem4 = AlbumItem(user_id=1, name="Sirloin Burger", description="Made with grade A beef",
-                     price="$7.99", era="Peak", band=band1)
-
+albumItem4 = AlbumItem(user_id=1, name="Led Zeppelin IV", description="Led Zeppelin IV was a commercial and critical success, featuring many of the band's best-known songs, including 'Black Dog', 'Rock and Roll', 'Going to California' and 'Stairway to Heaven'.", price="$19.95", era="Peak", band=band1, year="1971", picture="https://coverartarchive.org/release-group/2e61da88-39e9-3473-81d2-c964cb394952/front.jpg")
 session.add(albumItem4)
 session.commit()
 
-albumItem5 = AlbumItem(user_id=1, name="Root Beer", description="16oz of refreshing goodness",
-                     price="$1.99", era="Reformation", band=band1)
-
+albumItem5 = AlbumItem(user_id=1, name="Houses of the Holy", description="Containing some of the band's most famous songs, including 'The Song Remains the Same', 'The Rain Song', and 'No Quarter', Houses of the Holy became a commercial success, and was later certified 11x platinum.", price="$19.95", era="Peak", band=band1, year="1973", picture="https://coverartarchive.org/release-group/9b5006e5-b276-3a05-bcdd-8d986842320b/front.jpg")
 session.add(albumItem5)
 session.commit()
 
-albumItem6 = AlbumItem(user_id=1, name="Iced Tea", description="with Lemon",
-                     price="$.99", era="Reformation", band=band1)
-
+albumItem6 = AlbumItem(user_id=1, name="Physical Graffiti", description="Physical Graffiti was commercially and critically successful upon its release and debuted at number one on album charts in both the US and the UK. The album was later certified 16x platinum.", price="$19.95", era="Peak", band=band1, year="1975", picture="https://coverartarchive.org/release-group/116c9490-6af4-3827-8261-2d5b1f508fe7/front.jpg")
 session.add(albumItem6)
 session.commit()
 
-albumItem7 = AlbumItem(user_id=1, name="Grilled Cheese Sandwich",
-                     description="On texas toast with American Cheese", price="$3.49", era="Peak", band=band1)
-
+albumItem7 = AlbumItem(user_id=1, name="Presence", description="It was written and recorded during a tumultuous time in the band's history, as singer Robert Plant was recuperating from serious injuries he had sustained the previous year in a car accident.", price="$19.95", era="Swan-Song", band=band1, year="1976", picture="https://coverartarchive.org/release-group/42f8acce-90fc-3471-a4cd-ace1ab816276/front.jpg")
 session.add(albumItem7)
 session.commit()
 
-albumItem8 = AlbumItem(user_id=1, name="Veggie Burger", description="Made with freshest of ingredients and home grown spices",
-                     price="$5.99", era="Peak", band=band1)
-
+albumItem8 = AlbumItem(user_id=1, name="In Through the Out Door", description="Released by Swan Song Records, The album is a reflection of the personal turmoil that the band members had been going through before and during its recording.", price="$19.95", era="Swan-Song", band=band1, year="1979", picture="https://coverartarchive.org/release-group/2fbf4c3e-09e5-38f0-ae59-fbdc9ea16b87/front.jpg")
 session.add(albumItem8)
 session.commit()
 
+albumItem9 = AlbumItem(user_id=1, name="Coda", description="The album is a collection of unused tracks from various sessions during Led Zeppelin's twelve-year career. It was released two years after the group had officially disbanded following the death of drummer John Bonham.", price="$19.95", era="Reformation", band=band1, year="1982", picture="https://coverartarchive.org/release-group/61de0438-6c34-363f-904e-b4d6267c79b9/front.jpg")
+session.add(albumItem9)
+session.commit()
 
-# Menu for Super Stir Fry
-band2 = Band(user_id=1, name="Super Stir Fry Band")
+# Band profile for Black Sabbath
+band2 = Band(user_id=1, name="Black Sabbath", description="Black Sabbath are an English rock band, formed in Birmingham in 1968, by guitarist and main songwriter Tony Iommi, bassist and main lyricist Geezer Butler, singer Ozzy Osbourne, and drummer Bill Ward.", picture="https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Sabs.jpg/250px-Sabs.jpg")
 
 session.add(band2)
 session.commit()
 
-
-albumItem1 = AlbumItem(user_id=1, name="Chicken Stir Fry", description="With your choice of noodles vegetables and sauces",
-                     price="$7.99", era="Peak", band=band2)
+albumItem1 = AlbumItem(user_id=1, name="Black Sabbath", description="Although it was poorly received by most contemporary music critics at the time, Black Sabbath has since been credited as one of the most influential albums in the development of heavy metal music.", price="$19.95", era="Roots", band=band2, year="1970", picture="https://coverartarchive.org/release-group/826c9743-a3f0-3479-bf06-8df2e140ef1d/front.jpg")
 
 session.add(albumItem1)
 session.commit()
 
-albumItem2 = AlbumItem(user_id=1, name="Peking Duck",
-                     description=" A famous duck dish from Beijing[1] that has been prepared since the imperial era. The meat is prized for its thin, crisp skin, with authentic versions of the dish serving mostly the skin and little meat, sliced in front of the diners by the cook", price="$25", era="Peak", band=band2)
-
+albumItem2 = AlbumItem(user_id=1, name="Paranoid", description="Paranoid contains several of the band's signature songs, including 'Iron Man', 'War Pigs' and the title track, which was the band's only Top 20 hit, reaching number 4 in the UK charts.", price="$19.95", era="Peak", band=band2, year="1970", picture="https://coverartarchive.org/release-group/cc053745-c447-3566-8f27-bed5438c9133/front.jpg")
 session.add(albumItem2)
 session.commit()
 
-albumItem3 = AlbumItem(user_id=1, name="Spicy Tuna Roll", description="Seared rare ahi, avocado, edamame, cucumber with wasabi soy sauce ",
-                     price="15", era="Peak", band=band2)
-
+albumItem3 = AlbumItem(user_id=1, name="Master of Reality", description="It is widely regarded as the foundation of doom metal, stoner rock, and sludge metal. It was certified double platinum after having sold over 2 million copies.", price="$19.95", era="Peak", band=band2, year="1971", picture="https://coverartarchive.org/release-group/e51e9779-2edc-3b39-959c-299fdb5ed940/front.jpg")
 session.add(albumItem3)
 session.commit()
 
-albumItem4 = AlbumItem(user_id=1, name="Nepali Momo ", description="Steamed dumplings made with vegetables, spices and meat. ",
-                     price="12", era="Peak", band=band2)
-
+albumItem4 = AlbumItem(user_id=1, name="Vol 4", description=" It was the first album by Black Sabbath not produced by Rodger Bain; guitarist Tony Iommi assumed production duties. Patrick Meehan, the band's then-manager, was listed as co-producer.", price="$19.95", era="Peak", band=band2, year="1974", picture="https://coverartarchive.org/release-group/8c292627-3459-3852-8ebc-226c12db175d/front.jpg")
 session.add(albumItem4)
 session.commit()
 
-albumItem5 = AlbumItem(user_id=1, name="Beef Noodle Soup", description="A Chinese noodle soup made of stewed or red braised beef, beef broth, vegetables and Chinese noodles.",
-                     price="14", era="Peak", band=band2)
-
+albumItem5 = AlbumItem(user_id=1, name="Sabbath Bloody Sabboth", description="It was produced by the band and recorded at Morgan Studios in London in September 1973.", price="$19.95", era="Peak", band=band2, year="1973", picture="https://coverartarchive.org/release-group/dd9bd473-0232-3a12-b51e-742de1aca5ca/front.jpg")
 session.add(albumItem5)
 session.commit()
 
-albumItem6 = AlbumItem(user_id=1, name="Ramen", description="a Japanese noodle soup dish. It consists of Chinese-style wheat noodles served in a meat- or (occasionally) fish-based broth, often flavored with soy sauce or miso, and uses toppings such as sliced pork, dried seaweed, kamaboko, and green onions.",
-                     price="12", era="Peak", band=band2)
-
+albumItem6 = AlbumItem(user_id=1, name="Sabotage", description="It was recorded in the midst of litigation with their former manager Patrick Meehan and the stress that resulted from the band's ongoing legal woes infiltrated the recording process, inspiring the album's title.", price="$19.95", era="Swan-Song", band=band2, year="1975", picture="https://coverartarchive.org/release-group/8ef6fc58-d87a-46cf-ab9d-077291784ada/front-250.jpg")
 session.add(albumItem6)
 session.commit()
 
-
-# Menu for Panda Garden
-band1 = Band(user_id=1, name="Panda Garden Band")
-
-session.add(band1)
+albumItem7 = AlbumItem(user_id=1, name="Technical Ecstasy", description="The album was certified Gold on 19 June 1997 and peaked at number 51 on the Billboard 200 Album chart.", price="$19.95", era="Swan-Song", band=band2, year="1976", picture="https://coverartarchive.org/release-group/de117377-2f09-3502-8959-e1eca1b583a8/front.jpg")
+session.add(albumItem7)
 session.commit()
 
-
-albumItem1 = AlbumItem(user_id=1, name="Pho", description="a Vietnamese noodle soup consisting of broth, linguine-shaped rice noodles called banh pho, a few herbs, and meat.",
-                     price="$8.99", era="Peak", band=band1)
-
-session.add(albumItem1)
+albumItem8 = AlbumItem(user_id=1, name="Never Say Die!", description="It was the last studio album with the band's original lineup and also the last studio album to feature original vocalist Ozzy Osbourne until 2013's 13.", price="$19.95", era="Swan-Song", band=band2, year="1978", picture="https://coverartarchive.org/release-group/eb8c8e6c-b554-31d3-bae0-1c4ea64336d0/front-250.jpg")
+session.add(albumItem8)
 session.commit()
 
-albumItem2 = AlbumItem(user_id=1, name="Chinese Dumplings", description="a common Chinese dumpling which generally consists of minced meat and finely chopped vegetables wrapped into a piece of dough skin. The skin can be either thin and elastic or thicker.",
-                     price="$6.99", era="Roots", band=band1)
-
-session.add(albumItem2)
-session.commit()
-
-albumItem3 = AlbumItem(user_id=1, name="Gyoza", description="light seasoning of Japanese gyoza with salt and soy sauce, and in a thin gyoza wrapper",
-                     price="$9.95", era="Peak", band=band1)
-
-session.add(albumItem3)
-session.commit()
-
-albumItem4 = AlbumItem(user_id=1, name="Stinky Tofu", description="Taiwanese dish, deep fried fermented tofu served with pickled cabbage.",
-                     price="$6.99", era="Peak", band=band1)
-
-session.add(albumItem4)
-session.commit()
-
-albumItem2 = AlbumItem(user_id=1, name="Veggie Burger", description="Juicy grilled veggie patty with tomato mayo and lettuce",
-                     price="$9.50", era="Peak", band=band1)
-
-session.add(albumItem2)
-session.commit()
-
-
-# Menu for Thyme for that
-band1 = Band(user_id=1, name="Thyme for That Vegetarian Cuisine Band")
-
-session.add(band1)
-session.commit()
-
-
-albumItem1 = AlbumItem(user_id=1, name="Tres Leches Cake", description="Rich, luscious sponge cake soaked in sweet milk and topped with vanilla bean whipped cream and strawberries.",
-                     price="$2.99", era="Swan-Song", band=band1)
-
-session.add(albumItem1)
-session.commit()
-
-albumItem2 = AlbumItem(user_id=1, name="Mushroom risotto", description="Portabello mushrooms in a creamy risotto",
-                     price="$5.99", era="Peak", band=band1)
-
-session.add(albumItem2)
-session.commit()
-
-albumItem3 = AlbumItem(user_id=1, name="Honey Boba Shaved Snow",
-                     description="Milk snow layered with honey boba, jasmine tea jelly, grass jelly, caramel, cream, and freshly made mochi", price="$4.50", era="Swan-Song", band=band1)
-
-session.add(albumItem3)
-session.commit()
-
-albumItem4 = AlbumItem(user_id=1, name="Cauliflower Manchurian", description="Golden fried cauliflower florets in a midly spiced soya,garlic sauce cooked with fresh cilantro, celery, chilies,ginger & green onions",
-                     price="$6.95", era="Roots", band=band1)
-
-session.add(albumItem4)
-session.commit()
-
-albumItem5 = AlbumItem(user_id=1, name="Aloo Gobi Burrito", description="Vegan goodness. Burrito filled with rice, garbanzo beans, curry sauce, potatoes (aloo), fried cauliflower (gobi) and chutney. Nom Nom",
-                     price="$7.95", era="Peak", band=band1)
-
-session.add(albumItem5)
-session.commit()
-
-albumItem2 = AlbumItem(user_id=1, name="Veggie Burger", description="Juicy grilled veggie patty with tomato mayo and lettuce",
-                     price="$6.80", era="Peak", band=band1)
-
-session.add(albumItem2)
-session.commit()
-
-
-# Menu for Tony's Bistro
-band1 = Band(user_id=1, name="Tony\'s Bistro Band")
-
-session.add(band1)
-session.commit()
-
-
-albumItem1 = AlbumItem(user_id=1, name="Shellfish Tower", description="Lobster, shrimp, sea snails, crawfish, stacked into a delicious tower",
-                     price="$13.95", era="Peak", band=band1)
-
-session.add(albumItem1)
-session.commit()
-
-albumItem2 = AlbumItem(user_id=1, name="Chicken and Rice", description="Chicken... and rice",
-                     price="$4.95", era="Peak", band=band1)
-
-session.add(albumItem2)
-session.commit()
-
-albumItem3 = AlbumItem(user_id=1, name="Mom's Spaghetti", description="Spaghetti with some incredible tomato sauce made by mom",
-                     price="$6.95", era="Peak", band=band1)
-
-session.add(albumItem3)
-session.commit()
-
-albumItem4 = AlbumItem(user_id=1, name="Choc Full O\' Mint (Smitten\'s Fresh Mint Chip ice cream)",
-                     description="Milk, cream, salt, ..., Liquid nitrogen magic", price="$3.95", era="Swan-Song", band=band1)
-
-session.add(albumItem4)
-session.commit()
-
-albumItem5 = AlbumItem(user_id=1, name="Tonkatsu Ramen", description="Noodles in a delicious pork-based broth with a soft-boiled egg",
-                     price="$7.95", era="Peak", band=band1)
-
-session.add(albumItem5)
-session.commit()
-
-
-# Menu for Andala's
-band1 = Band(user_id=1, name="Andala\'s Band")
-
-session.add(band1)
-session.commit()
-
-
-albumItem1 = AlbumItem(user_id=1, name="Lamb Curry", description="Slow cook that thang in a pool of tomatoes, onions and alllll those tasty Indian spices. Mmmm.",
-                     price="$9.95", era="Peak", band=band1)
-
-session.add(albumItem1)
-session.commit()
-
-albumItem2 = AlbumItem(user_id=1, name="Chicken Marsala", description="Chicken cooked in Marsala wine sauce with mushrooms",
-                     price="$7.95", era="Peak", band=band1)
-
-session.add(albumItem2)
-session.commit()
-
-albumItem3 = AlbumItem(user_id=1, name="Potstickers", description="Delicious chicken and veggies encapsulated in fried dough.",
-                     price="$6.50", era="Roots", band=band1)
-
-session.add(albumItem3)
-session.commit()
-
-albumItem4 = AlbumItem(user_id=1, name="Nigiri Sampler", description="Maguro, Sake, Hamachi, Unagi, Uni, TORO!",
-                     price="$6.75", era="Roots", band=band1)
-
-session.add(albumItem4)
-session.commit()
-
-albumItem2 = AlbumItem(user_id=1, name="Veggie Burger", description="Juicy grilled veggie patty with tomato mayo and lettuce",
-                     price="$7.00", era="Peak", band=band1)
-
-session.add(albumItem2)
-session.commit()
-
-
-# Menu for Auntie Ann's
-band1 = Band(user_id=1, name="Auntie Ann\'s Diner' Band")
-
-session.add(band1)
-session.commit()
-
-albumItem9 = AlbumItem(user_id=1, name="Chicken Fried Steak",
-                     description="Fresh battered sirloin steak fried and smothered with cream gravy", price="$8.99", era="Peak", band=band1)
-
+albumItem9 = AlbumItem(user_id=1, name="Reunion", description="It features the original line-up of Ozzy Osbourne, Tony Iommi, Geezer Butler and Bill Ward, the first recording of the four musicians together after the firing of Osbourne in 1979.", price="$19.95", era="Reformation", band=band2, year="1998", picture="https://coverartarchive.org/release-group/5048cda8-4269-3226-a289-71ef84c3ff0e/front-250.jpg")
 session.add(albumItem9)
 session.commit()
 
+# Band profile for Deep Purple
+band3 = Band(user_id=1, name="Deep Purple", description="Deep Purple are an English rock band formed in Hertford in 1968. They are considered to be among the pioneers of heavy metal and modern hard rock.", picture="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Deep_Purple_in_2004.jpg/250px-Deep_Purple_in_2004.jpg")
 
-albumItem1 = AlbumItem(user_id=1, name="Boysenberry Sorbet", description="An unsettlingly huge amount of ripe berries turned into frozen (and seedless) awesomeness",
-                     price="$2.99", era="Swan-Song", band=band1)
+session.add(band3)
+session.commit()
 
+albumItem1 = AlbumItem(user_id=1, name="Shades of Deep Purple", description="Stylistically the music is close to psychedelic rock and progressive rock, two genres with an ever-growing audience in the late 1960s.", price="$19.95", era="Roots", band=band3, year="1968", picture="https://coverartarchive.org/release-group/bdb083d6-be5e-32b3-97df-3d899a8ff858/front.jpg")
 session.add(albumItem1)
 session.commit()
 
-albumItem2 = AlbumItem(user_id=1, name="Broiled salmon", description="Salmon fillet marinated with fresh herbs and broiled hot & fast",
-                     price="$10.95", era="Peak", band=band1)
 
+albumItem2 = AlbumItem(user_id=1, name="The Book of Taliesyn", description="The music style is a mix of psychedelic rock, progressive rock and hard rock, with several inserts of classical music arranged by the band's keyboard player Jon Lord.", price="$19.95", era="Roots", band=band3, year="1968", picture="https://coverartarchive.org/release-group/3a2bbe30-d2c7-367b-9326-f0082adad661/front.jpg")
 session.add(albumItem2)
 session.commit()
 
-albumItem3 = AlbumItem(user_id=1, name="Morels on toast (seasonal)",
-                     description="Wild morel mushrooms fried in butter, served on herbed toast slices", price="$7.50", era="Roots", band=band1)
-
+albumItem3 = AlbumItem(user_id=1, name="Deep Purple", description="It was the last album with the original line-up due to conflicts over whether the band should continue in their rawer, heavier direction.", price="$19.95", era="Roots", band=band3, year="1969", picture="https://coverartarchive.org/release-group/bacc3ccf-32aa-3103-b50c-4edaa35e6fb6/front-250.jpg")
 session.add(albumItem3)
 session.commit()
 
-albumItem4 = AlbumItem(user_id=1, name="Tandoori Chicken", description="Chicken marinated in yoghurt and seasoned with a spicy mix(chilli, tamarind among others) and slow cooked in a cylindrical clay or metal oven which gets its heat from burning charcoal.",
-                     price="$8.95", era="Peak", band=band1)
-
+albumItem4 = AlbumItem(user_id=1, name="Deep Purple in Rock", description="It was the first studio album recorded by the classic Mark II line-up. Rod Evans (vocals) and Nick Simper (bass) had been fired in June 1969 and were replaced by Ian Gillan and Roger Glover, respectively.", price="$19.95", era="Roots", band=band3, year="1970", picture="https://coverartarchive.org/release-group/ebdb53c3-fbae-34b1-81cb-f825c9a56822/front-250.jpg")
 session.add(albumItem4)
 session.commit()
 
-albumItem2 = AlbumItem(user_id=1, name="Veggie Burger", description="Juicy grilled veggie patty with tomato mayo and lettuce",
-                     price="$9.50", era="Peak", band=band1)
-
-session.add(albumItem2)
+albumItem5 = AlbumItem(user_id=1, name="Fireball", description="The second with the classic Mk II line-up. It was recorded at various times between September 1970 and June 1971.", price="$19.95", era="Roots", band=band3, year="1971", picture="https://coverartarchive.org/release-group/b9547871-240a-3ca4-97d7-9f2dfffe471c/front-250.jpg")
+session.add(albumItem5)
 session.commit()
 
-albumItem10 = AlbumItem(user_id=1, name="Spinach Ice Cream", description="vanilla ice cream made with organic spinach leaves",
-                      price="$1.99", era="Swan-Song", band=band1)
+albumItem6 = AlbumItem(user_id=1, name="Machine Head", description="Machine Head is often cited as a major influence in the early development of the heavy metal music genre. Commercially, it is Deep Purple's most successful album.", price="$19.95", era="Peak", band=band3, year="1972", picture="https://coverartarchive.org/release-group/d00243c5-adcf-3018-9aa7-1957d7a5a774/front-250.jpg")
+session.add(albumItem6)
+session.commit()
 
+albumItem7 = AlbumItem(user_id=1, name="Who Do We Think We Are", description="Showeing a move to a more blues based sound, Deep Purple's last album with singer Ian Gillan and bassist Roger Glover until Perfect Strangers came out in 1984.", price="$19.95", era="Swan-Song", band=band3, year="1973", picture="https://coverartarchive.org/release-group/edba2b6f-8f50-3bc9-b2ac-1df8bdb51daa/front-250.jpg")
+session.add(albumItem7)
+session.commit()
+
+albumItem8 = AlbumItem(user_id=1, name="Burn", description="This was the first Deep Purple album to feature then-unknown David Coverdale on vocals and Glenn Hughes from Trapeze on bass and vocals.", price="$19.95", era="Swan-Song", band=band3, year="1974", picture="https://coverartarchive.org/release-group/e8459360-b0d1-331e-a1e7-9717c962d29f/front-250.jpg")
+session.add(albumItem8)
+session.commit()
+
+albumItem9 = AlbumItem(user_id=1, name="Stormbringer", description="On this album, the soul and funk elements that were only hinted at on Burn are much more prominent.", price="$19.95", era="Swan-Song", band=band3, year="1974", picture="https://coverartarchive.org/release-group/95d17f98-dfe2-36c4-b950-fcdc1bdbc279/front-250.jpg")
+session.add(albumItem9)
+session.commit()
+
+albumItem10 = AlbumItem(user_id=1, name="Come Taste The Band", description="It is the only Deep Purple studio record featuring Tommy Bolin, who replaced Ritchie Blackmore on guitar and is also the final of three albums to feature Glenn Hughes on bass and David Coverdale on lead vocals, before he later left to form Whitesnake.", price="$19.95", era="Swan-Song", band=band3, year="1975", picture="https://coverartarchive.org/release-group/d12f085d-7861-36cd-a2fb-55a18ddc6e56/front-250.jpg")
 session.add(albumItem10)
 session.commit()
 
-
-# Menu for Cocina Y Amor
-band1 = Band(user_id=1, name="Cocina Y Amor Band")
-
-session.add(band1)
-session.commit()
-
-
-albumItem1 = AlbumItem(user_id=1, name="Super Burrito Al Pastor",
-                     description="Marinated Pork, Rice, Beans, Avocado, Cilantro, Salsa, Tortilla", price="$5.95", era="Peak", band=band1)
-
-session.add(albumItem1)
-session.commit()
-
-albumItem2 = AlbumItem(user_id=1, name="Cachapa", description="Golden brown, corn-based Venezuelan pancake; usually stuffed with queso telita or queso de mano, and possibly lechon. ",
-                     price="$7.99", era="Peak", band=band1)
-
-session.add(albumItem2)
-session.commit()
-
-
-band1 = Band(user_id=1, name="State Bird Provisions Band")
-session.add(band1)
-session.commit()
-
-albumItem1 = AlbumItem(user_id=1, name="Chantrelle Toast", description="Crispy Toast with Sesame Seeds slathered with buttery chantrelle mushrooms",
-                     price="$5.95", era="Roots", band=band1)
-
-session.add(albumItem1)
-session.commit
-
-albumItem1 = AlbumItem(user_id=1, name="Guanciale Chawanmushi",
-                     description="Japanese egg custard served hot with spicey Italian Pork Jowl (guanciale)", price="$6.95", era="Swan-Song", band=band1)
-
-session.add(albumItem1)
-session.commit()
-
-
-albumItem1 = AlbumItem(user_id=1, name="Lemon Curd Ice Cream Sandwich",
-                     description="Lemon Curd Ice Cream Sandwich on a chocolate macaron with cardamom meringue and cashews", price="$4.25", era="Swan-Song", band=band1)
-
-session.add(albumItem1)
+albumItem11 = AlbumItem(user_id=1, name="Perfect Strangers", description="It was the first Deep Purple studio album in nine years, and the first with the Mk II line-up in eleven years, the last being Who Do We Think We Are in 1973.", price="$19.95", era="Reformation", band=band3, year="1984", picture="https://coverartarchive.org/release-group/41a276ce-ea2b-377c-9ad8-0ef0bfd1f5c2/front-250.jpg")
+session.add(albumItem11)
 session.commit()
 
 
