@@ -163,5 +163,5 @@ session.add(albumItem11)
 session.commit()
 
 
-print "added album items!"
+print "Bands and albums successfully imported!"
 
