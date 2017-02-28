@@ -1,0 +1,40 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+	<div class="row divider green">
+		<div class="col-md-12"></div>
+	</div>
+
+	<div class="row banner menu">
+
+		<div class="col-md-11 col-md-offset-1 padding-none">
+			<h1>Edit {{band.name}}</h1>
+		</div>
+
+	</div>
+	<div class="row">
+		<div class="col-md-6 col-md-offset-1 padding-top">
+			<form action="{{ url_for('editBand',band_id = band.id)}}" method = "post">
+				<div class="form-group">
+					<label for="name">Name:</label>
+					<input type ="text" class="form-control" name="name" value="{{band.name }}">
+<!-- 					<label for="description">Description:</label>
+					<input type ="text" class="form-control" name="description" value="{{band.description }}"> -->
+				<label for="description">Description:</label>
+					<textarea class="form-control" maxlength="250" rows="4" name="description" required>{{band.description}}</textarea>
+<!-- 					<label for="picture">Picture URL:</label>
+					<input type ="text" class="form-control" name="picture" value="{{band.picture }}"> -->
+						<label for="picture">Picture URL:</label>
+						<textarea class="form-control" maxlength="250" rows="2" name="picture">{{band.picture}}</textarea>
+					<div class="padding-bottom"></div>
+					<button type="submit" class="btn btn-default" id="submit" type="submit">
+					<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>Save</button>
+					<a href = '{{url_for('showAlbums', band_id = band.id )}}'>
+						<button type="button" class="btn btn-default delete">
+						<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel</button>
+					</a>
+				</div>
+			</form>
+		</div>
+	</div>
+{% endblock %}

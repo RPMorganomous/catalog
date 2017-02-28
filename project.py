@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, jsonify, url_for, flash
 from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
-from database_setup import Base, Restaurant, MenuItem, User
+from band_database_setup import Base, Band, AlbumItem, User
 from flask import session as login_session
 import random
 import string
@@ -16,11 +16,11 @@ app = Flask(__name__)
 
 CLIENT_ID = json.loads(
     open('client_secrets.json', 'r').read())['web']['client_id']
-APPLICATION_NAME = "Restaurant Menu Application"
+APPLICATION_NAME = "Classic Rock Hall Of Fame"
 
 
 # Connect to Database and create database session
-engine = create_engine('sqlite:///restaurantmenuwithusers.db')
+engine = create_engine('sqlite:///bandalbumswithusers.db')
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
@@ -253,164 +253,174 @@ def gdisconnect():
         return response
 
 
-# JSON APIs to view Restaurant Information
-@app.route('/restaurant/<int:restaurant_id>/menu/JSON')
-def restaurantMenuJSON(restaurant_id):
-    restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
-    items = session.query(MenuItem).filter_by(restaurant_id=restaurant_id).all()
-    return jsonify(MenuItems=[i.serialize for i in items])
+# JSON APIs to view Band Information
+@app.route('/band/<int:band_id>/albums/JSON')
+def bandAlbumsJSON(band_id):
+    band = session.query(Band).filter_by(id=band_id).one()
+    albums = session.query(AlbumItem).filter_by(band_id=band_id).all()
+    return jsonify(AlbumItems=[i.serialize for i in albums])
 
 
-@app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/JSON')
-def menuItemJSON(restaurant_id, menu_id):
-    Menu_Item = session.query(MenuItem).filter_by(id=menu_id).one()
-    return jsonify(Menu_Item=Menu_Item.serialize)
+@app.route('/band/<int:band_id>/menu/<int:album_id>/JSON')
+def AlbumItemJSON(band_id, album_id):
+    Album_Item = session.query(AlbumItem).filter_by(id=album_id).one()
+    return jsonify(Album_Item=Album_Item.serialize)
 
 
-@app.route('/restaurant/JSON')
-def restaurantsJSON():
-    restaurants = session.query(Restaurant).all()
-    return jsonify(restaurants=[r.serialize for r in restaurants])
+@app.route('/bands/JSON')
+def bandsJSON():
+    bands = session.query(Band).all()
+    return jsonify(bands=[r.serialize for r in bands])
 
 
 # Show all restaurants
 @app.route('/')
-@app.route('/restaurant/')
-def showRestaurants():
-    restaurants = session.query(Restaurant).order_by(asc(Restaurant.name))
+@app.route('/bands/')
+def showBands():
+    bands = session.query(Band).order_by(asc(Band.name))
     if 'username' not in login_session:
-        return render_template('publicrestaurants.html', restaurants=restaurants)
+        return render_template('publicbands.html', bands=bands)
     else:
-        return render_template('restaurants.html', restaurants=restaurants)
+        return render_template('bands.html', bands=bands)
 
-# Create a new restaurant
+# Create a new band
 
 
-@app.route('/restaurant/new/', methods=['GET', 'POST'])
-def newRestaurant():
+@app.route('/band/new/', methods=['GET', 'POST'])
+def newBand():
     if 'username' not in login_session:
         return redirect('/login')
     if request.method == 'POST':
-        newRestaurant = Restaurant(name=request.form['name'], user_id=login_session['user_id'])
-        session.add(newRestaurant)
-        flash('New Restaurant %s Successfully Created' % newRestaurant.name)
+        newBand = Band(name=request.form['name'], picture=request.form['picture'], description=request.form['description'], user_id=login_session['user_id'])
+        session.add(newBand)
+        flash('New Band %s Successfully Created' % newBand.name)
         session.commit()
-        return redirect(url_for('showRestaurants'))
+        return redirect(url_for('showBands'))
     else:
-        return render_template('newRestaurant.html')
+        return render_template('newBand.html')
 
-# Edit a restaurant
+# Edit a band
 
 
-@app.route('/restaurant/<int:restaurant_id>/edit/', methods=['GET', 'POST'])
-def editRestaurant(restaurant_id):
-    editedRestaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
+@app.route('/band/<int:band_id>/edit/', methods=['GET', 'POST'])
+def editBand(band_id):
+    editedBand = session.query(Band).filter_by(id=band_id).one()
     if 'username' not in login_session:
         return redirect('/login')
-    if editedRestaurant.user_id != login_session['user_id']:
-        return "<script>function myFunction() {alert('You are not authorized to edit this restaurant. Please create your own restaurant in order to edit.');}</script><body onload='myFunction()''>"
+    if editedBand.user_id != login_session['user_id']:
+        return "<script>function myFunction() {alert('You are not authorized to edit this band. Please create your own band in order to edit.');}</script><body onload='myFunction()''>"
     if request.method == 'POST':
         if request.form['name']:
-            editedRestaurant.name = request.form['name']
-            session.add(editedRestaurant)
+            editedBand.name = request.form['name']
+            editedBand.picture = request.form['picture']
+            editedBand.description = request.form['description']
+            session.add(editedBand)
             session.commit()
-            flash('Restaurant Successfully Edited %s' % editedRestaurant.name)
-            return redirect(url_for('showRestaurants'))
+            flash('Band Successfully Edited %s' % editedBand.name)
+            return redirect(url_for('showAlbums', band_id=band_id))
     else:
-        return render_template('editRestaurant.html', restaurant=editedRestaurant)
+        return render_template('editBand.html', band=editedBand)
 
 
-# Delete a restaurant
-@app.route('/restaurant/<int:restaurant_id>/delete/', methods=['GET', 'POST'])
-def deleteRestaurant(restaurant_id):
-    restaurantToDelete = session.query(Restaurant).filter_by(id=restaurant_id).one()
+# Delete a band
+@app.route('/band/<int:band_id>/delete/', methods=['GET', 'POST'])
+def deleteBand(band_id):
+    bandToDelete = session.query(Band).filter_by(id=band_id).one()
+    albumsToDelete = session.query(AlbumItem).filter_by(band_id=band_id).all()
     if 'username' not in login_session:
         return redirect('/login')
-    if restaurantToDelete.user_id != login_session['user_id']:
-        return "<script>function myFunction() {alert('You are not authorized to delete this restaurant. Please create your own restaurant in order to delete.');}</script><body onload='myFunction()''>"
+    if bandToDelete.user_id != login_session['user_id']:
+        return "<script>function myFunction() {alert('You are not authorized to delete this band. Please create your own band in order to delete.');}</script><body onload='myFunction()''>"
     if request.method == 'POST':
-        session.delete(restaurantToDelete)
-        flash('%s Successfully Deleted' % restaurantToDelete.name)
+        session.delete(bandToDelete)
+        if albumsToDelete !=[]:
+            for i in albumsToDelete:
+                session.delete(i)
+        flash('%s Successfully Deleted' % bandToDelete.name)
         session.commit()
-        return redirect(url_for('showRestaurants', restaurant_id=restaurant_id))
+        return redirect(url_for('showBands', band_id=band_id))
     else:
-        return render_template('deleteRestaurant.html', restaurant=restaurantToDelete)
+        return render_template('deleteband.html', band=bandToDelete)
 
-# Show a restaurant menu
+# Show albums for a band
 
-@app.route('/restaurant/<int:restaurant_id>/')
-@app.route('/restaurant/<int:restaurant_id>/menu/')
-def showMenu(restaurant_id):
-    restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
-    creator = getUserInfo(restaurant.user_id)
-    items = session.query(MenuItem).filter_by(restaurant_id=restaurant_id).all()
+@app.route('/band/<int:band_id>/')
+@app.route('/band/<int:band_id>/albums/')
+def showAlbums(band_id):
+    band = session.query(Band).filter_by(id=band_id).one()
+    creator = getUserInfo(band.user_id)
+    albums = session.query(AlbumItem).filter_by(band_id=band_id).all()
     if 'username' not in login_session or creator.id != login_session['user_id']:
-        return render_template('publicmenu.html', items=items, restaurant=restaurant, creator=creator)
+        return render_template('publicalbums.html', albums=albums, band=band, creator=creator)
     else:
-        return render_template('menu.html', items=items, restaurant=restaurant, creator=creator)
+        return render_template('albums.html', albums=albums, band=band, creator=creator)
 
 
-# Create a new menu item
-@app.route('/restaurant/<int:restaurant_id>/menu/new/', methods=['GET', 'POST'])
-def newMenuItem(restaurant_id):
+# Create a new album
+@app.route('/band/<int:band_id>/album/new/', methods=['GET', 'POST'])
+def newAlbum(band_id):
     if 'username' not in login_session:
         return redirect('/login')
-    restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
-    if login_session['user_id'] != restaurant.user_id:
-        return "<script>function myFunction() {alert('You are not authorized to add menu items to this restaurant. Please create your own restaurant in order to add items.');}</script><body onload='myFunction()''>"
+    band = session.query(Band).filter_by(id=band_id).one()
+    if login_session['user_id'] != band.user_id:
+        return "<script>function myFunction() {alert('You are not authorized to add albums  to this band. Please create your own band in order to add albums.');}</script><body onload='myFunction()''>"
     if request.method == 'POST':
-        newItem = MenuItem(name=request.form['name'], description=request.form['description'], price=request.form['price'], course=request.form['course'], restaurant_id=restaurant_id, user_id=restaurant.user_id)
+        newItem = AlbumItem(name=request.form['name'], description=request.form['description'], year=request.form['year'], picture=request.form['picture'], price=request.form['price'], era=request.form['course'], band_id=band_id, user_id=band.user_id)
         session.add(newItem)
         session.commit()
-        flash('New Menu %s Item Successfully Created' % (newItem.name))
-        return redirect(url_for('showMenu', restaurant_id=restaurant_id))
+        flash('New Album %s Successfully Created' % (newItem.name))
+        return redirect(url_for('showAlbums', band_id=band_id))
     else:
-        return render_template('newmenuitem.html', restaurant_id=restaurant_id)
+        return render_template('newalbumitem.html', band_id=band_id)
 
-# Edit a menu item
+# Edit an album
 
 
-@app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/edit', methods=['GET', 'POST'])
-def editMenuItem(restaurant_id, menu_id):
+@app.route('/band/<int:band_id>/album/<int:album_id>/edit', methods=['GET', 'POST'])
+def editAlbumItem(band_id, album_id): # start here, rick
     if 'username' not in login_session:
         return redirect('/login')
-    editedItem = session.query(MenuItem).filter_by(id=menu_id).one()
-    restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
-    if login_session['user_id'] != restaurant.user_id:
-        return "<script>function myFunction() {alert('You are not authorized to edit menu items to this restaurant. Please create your own restaurant in order to edit items.');}</script><body onload='myFunction()''>"
+    editedAlbum = session.query(AlbumItem).filter_by(id=album_id).one()
+    band = session.query(Band).filter_by(id=band_id).one()
+    if login_session['user_id'] != band.user_id:
+        return "<script>function myFunction() {alert('You are not authorized to edit albums of this band. Please create your own band in order to edit albums.');}</script><body onload='myFunction()''>"
     if request.method == 'POST':
         if request.form['name']:
-            editedItem.name = request.form['name']
+            editedAlbum.name = request.form['name']
+        if request.form['year']:
+            editedAlbum.year = request.form['year']
         if request.form['description']:
-            editedItem.description = request.form['description']
+            editedAlbum.description = request.form['description']
+        if request.form['picture']:
+            editedAlbum.picture = request.form['picture']
         if request.form['price']:
-            editedItem.price = request.form['price']
-        if request.form['course']:
-            editedItem.course = request.form['course']
-        session.add(editedItem)
+            editedAlbum.price = request.form['price']
+        if request.form['era']:
+            editedAlbum.era = request.form['era']
+        session.add(editedAlbum)
         session.commit()
-        flash('Menu Item Successfully Edited')
-        return redirect(url_for('showMenu', restaurant_id=restaurant_id))
+        flash('Album Successfully Edited')
+        return redirect(url_for('showAlbums', band_id=band_id))
     else:
-        return render_template('editmenuitem.html', restaurant_id=restaurant_id, menu_id=menu_id, item=editedItem)
+        return render_template('editalbumitem.html', band_id=band_id, album_id=album_id, item=editedAlbum)
 
 
-# Delete a menu item
-@app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/delete', methods=['GET', 'POST'])
-def deleteMenuItem(restaurant_id, menu_id):
+# Delete an album
+@app.route('/band/<int:band_id>/album/<int:album_id>/delete', methods=['GET', 'POST'])
+def deleteAlbumItem(band_id, album_id):
     if 'username' not in login_session:
         return redirect('/login')
-    restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
-    itemToDelete = session.query(MenuItem).filter_by(id=menu_id).one()
-    if login_session['user_id'] != restaurant.user_id:
-        return "<script>function myFunction() {alert('You are not authorized to delete menu items to this restaurant. Please create your own restaurant in order to delete items.');}</script><body onload='myFunction()''>"
+    band = session.query(Band).filter_by(id=band_id).one()
+    AlbumToDelete = session.query(AlbumItem).filter_by(id=album_id).one()
+    if login_session['user_id'] != band.user_id:
+        return "<script>function myFunction() {alert('You are not authorized to delete albums from this band. Please create your own band in order to delete albums.');}</script><body onload='myFunction()''>"
     if request.method == 'POST':
-        session.delete(itemToDelete)
+        session.delete(AlbumToDelete)
         session.commit()
-        flash('Menu Item Successfully Deleted')
-        return redirect(url_for('showMenu', restaurant_id=restaurant_id))
+        flash('Album Successfully Deleted')
+        return redirect(url_for('showAlbums', band_id=band_id))
     else:
-        return render_template('deleteMenuItem.html', item=itemToDelete)
+        return render_template('deletealbumitem.html', item=AlbumToDelete)
 
 
 # Disconnect based on provider
@@ -430,13 +440,13 @@ def disconnect():
         del login_session['user_id']
         del login_session['provider']
         flash("You have successfully been logged out.")
-        return redirect(url_for('showRestaurants'))
+        return redirect(url_for('showBands'))
     else:
         flash("You were not logged in")
-        return redirect(url_for('showRestaurants'))
+        return redirect(url_for('showBands'))
 
 
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'
     app.debug = True
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=8000)
