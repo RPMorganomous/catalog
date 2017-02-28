@@ -15,7 +15,7 @@
 * Google API
 * Facebook API
 
-This catalog project is a Python module that uses an sqlite database to manage bands and albums from the classic rock genre.  The purpose of this project is to demonstrate aptitude with Create Read Update and Delete database functionality.
+###This catalog project is a Python module that uses an sqlite database to manage bands and albums from the classic rock genre.  The purpose of this project is to demonstrate aptitude with Create Read Update and Delete database functionality.###
 
 The program is tested by executing project.py.  If all goes well, when you open your browser and point to localhost:8000 you will see this:
 
@@ -89,7 +89,7 @@ Using the terminal, change directory to oauth (**cd oauth**), then type **vagran
     $ cd vagrant
     $ cd catalog
 
-###Initialize the database### 
+###Initialize the database###
 
 (Optional unless you want to use the pre-configured database.  Otherwise, you can delete bandalbumswithusers.db and recreate it using the following commands)
 
