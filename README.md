@@ -108,6 +108,14 @@ You should see this result:
     Open your browser and point to localhost:8000
     Use the LOGIN option at the upper right of your screen to log in using Google or Facebook.  Upon first login you will
     be added as a new user with permission to edit any bands or albums you create.
+    
+###JSON output###
+
+    This application will produce JSON files by directing your browser to the following urls:
+    /band/<int:band_id>/albums/JSON for all albums by a specific band
+    /album/<int:album_id>/JSON for a specific album
+    /albums/JSON for all albums in the db
+    /bands/JSON for all bands in the db
 
 ###Shutdown the application###
 
