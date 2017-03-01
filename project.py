@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect, jsonify, url_for, flash
+from flask import \
+    Flask, render_template, request, redirect, jsonify, url_for, flash
 from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
 from band_database_setup import Base, Band, AlbumItem, User
@@ -46,9 +47,13 @@ def fbconnect():
     access_token = request.data
     print "access token received %s " % access_token
 
-    app_id = json.loads(open('fb_client_secrets.json', 'r').read())['web']['app_id']
-    app_secret = json.loads(open('fb_client_secrets.json', 'r').read())['web']['app_secret']
-    url = 'https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=%s&client_secret=%s&fb_exchange_token=%s' % (app_id, app_secret, access_token)
+    app_id = json.loads(open('fb_client_secrets.json', 'r')
+                        .read())['web']['app_id']
+    app_secret = json.loads(open('fb_client_secrets.json', 'r')
+                            .read())['web']['app_secret']
+    url = ('https://graph.facebook.com/oauth/access_token'
+           '?grant_type=fb_exchange_token&client_id=%s&client_secret=%s'
+           '&fb_exchange_token=%s') % (app_id, app_secret, access_token)
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
 
@@ -56,7 +61,6 @@ def fbconnect():
     userinfo_url = "https://graph.facebook.com/v2.4/me"
     # strip expire tag from access token
     token = result.split("&")[0]
-
 
     url = 'https://graph.facebook.com/v2.4/me?%s&fields=name,id,email' % token
     h = httplib2.Http()
@@ -69,12 +73,15 @@ def fbconnect():
     login_session['email'] = data["email"]
     login_session['facebook_id'] = data["id"]
 
-    # The token must be stored in the login_session in order to properly logout, let's strip out the information before the equals sign in our token
+    # The token must be stored in the login_session in order to properly
+    # logout, let's strip out the information before the equals sign in our
+    # token
     stored_token = token.split("=")[1]
     login_session['access_token'] = stored_token
 
     # Get user picture
-    url = 'https://graph.facebook.com/v2.4/me/picture?%s&redirect=0&height=200&width=200' % token
+    url = ('https://graph.facebook.com/v2.4/me/picture?%s&redirect=0'
+           '&height=200&width=200') % token
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
     data = json.loads(result)
@@ -96,7 +103,8 @@ def fbconnect():
     output += '!</h1>'
     output += '<img src="'
     output += login_session['picture']
-    output += ' " style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
+    output += (' " style = "width: 300px; height: 300px;border-radius: 150px;'
+               '-webkit-border-radius: 150px;-moz-border-radius: 150px;"> ')
 
     flash("Now logged in as %s" % login_session['username'])
     return output
@@ -107,7 +115,8 @@ def fbdisconnect():
     facebook_id = login_session['facebook_id']
     # The access token must me included to successfully logout
     access_token = login_session['access_token']
-    url = 'https://graph.facebook.com/%s/permissions?access_token=%s' % (facebook_id,access_token)
+    url = ('https://graph.facebook.com/%s/permissions?access_token=%s'
+           % (facebook_id, access_token))
     h = httplib2.Http()
     result = h.request(url, 'DELETE')[1]
     return "you have been logged out"
@@ -129,13 +138,15 @@ def gconnect():
         oauth_flow.redirect_uri = 'postmessage'
         credentials = oauth_flow.step2_exchange(code)
     except FlowExchangeError:
-        response = make_response(json.dumps('Failed to upgrade the authorization code.'), 401)
+        response = make_response(json.dumps('Failed to upgrade the \
+            authorization code.'), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
 
     # Check that the access token is valid.
     access_token = credentials.access_token
-    url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s' % access_token)
+    url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s'
+           % access_token)
     h = httplib2.Http()
     result = json.loads(h.request(url, 'GET')[1])
     # If there was an error in the access token info, abort.
@@ -147,13 +158,15 @@ def gconnect():
     # Verify that the access token is used for the intended user.
     gplus_id = credentials.id_token['sub']
     if result['user_id'] != gplus_id:
-        response = make_response(json.dumps("Token's user ID doesn't match given user ID."), 401)
+        response = make_response(json.dumps("Token's user ID doesn't match \
+            given user ID."), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
 
     # Verify that the access token is valid for this app.
     if result['issued_to'] != CLIENT_ID:
-        response = make_response(json.dumps("Token's client ID does not match app's."), 401)
+        response = make_response(json.dumps("Token's client ID does not match \
+            app's."), 401)
         print "Token's client ID does not match app's."
         response.headers['Content-Type'] = 'application/json'
         return response
@@ -161,7 +174,8 @@ def gconnect():
     stored_credentials = login_session.get('credentials')
     stored_gplus_id = login_session.get('gplus_id')
     if stored_credentials is not None and gplus_id == stored_gplus_id:
-        response = make_response(json.dumps('Current user is already connected.'),200)
+        response = make_response(json.dumps('Current user is already \
+            connected.'), 200)
         response.headers['Content-Type'] = 'application/json'
         return response
 
@@ -197,12 +211,14 @@ def gconnect():
     output += '!</h1>'
     output += '<img src="'
     output += login_session['picture']
-    output += ' " style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
+    output += (' " style = "width: 300px; height: 300px;border-radius: 150px;'
+               '-webkit-border-radius: 150px;-moz-border-radius: 150px;"> ')
     flash("you are now logged in as %s" % login_session['username'])
     print "done!"
     return output
 
 # User Helper Functions
+
 
 def updatePhoto(user_id):
     thisUser = session.query(User).filter_by(id=user_id).one()
@@ -210,8 +226,12 @@ def updatePhoto(user_id):
     session.add(thisUser)
     session.commit()
 
+
 def createUser(login_session):
-    newUser = User(name=login_session['username'], email=login_session['email'], picture=login_session['picture'])
+    newUser = User(
+        name=login_session['username'],
+        email=login_session['email'],
+        picture=login_session['picture'])
     session.add(newUser)
     session.commit()
     user = session.query(User).filter_by(email=login_session['email']).one()
@@ -238,7 +258,8 @@ def gdisconnect():
     # Only disconnect a connected user.
     credentials = login_session.get('credentials')
     if credentials is None:
-        response = make_response(json.dumps('Current user not connected.'), 401)
+        response = make_response(
+            json.dumps('Current user not connected.'), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
     access_token = credentials.access_token
@@ -266,10 +287,12 @@ def albumItemJSON(album_id):
     Album_Item = session.query(AlbumItem).filter_by(id=album_id).one()
     return jsonify(Album_Item=Album_Item.serialize)
 
+
 @app.route('/albums/JSON')
 def albumsJSON():
     albums = session.query(AlbumItem).all()
     return jsonify(albums=[r.serialize for r in albums])
+
 
 @app.route('/bands/JSON')
 def bandsJSON():
@@ -277,7 +300,7 @@ def bandsJSON():
     return jsonify(bands=[r.serialize for r in bands])
 
 
-# Show all restaurants
+# Show all bands
 @app.route('/')
 @app.route('/bands/')
 def showBands():
@@ -295,7 +318,11 @@ def newBand():
     if 'username' not in login_session:
         return redirect('/login')
     if request.method == 'POST':
-        newBand = Band(name=request.form['name'], picture=request.form['picture'], description=request.form['description'], user_id=login_session['user_id'])
+        newBand = Band(
+            name=request.form['name'],
+            picture=request.form['picture'],
+            description=request.form['description'],
+            user_id=login_session['user_id'])
         session.add(newBand)
         flash('New Band %s Successfully Created' % newBand.name)
         session.commit()
@@ -312,7 +339,11 @@ def editBand(band_id):
     if 'username' not in login_session:
         return redirect('/login')
     if editedBand.user_id != login_session['user_id']:
-        return "<script>function myFunction() {alert('You are not authorized to edit this band. Please create your own band in order to edit.');}</script><body onload='myFunction()''>"
+        return (
+            "<script>function myFunction() \
+            {alert('You are not authorized to edit this band. Please create "
+            "your own band in order to edit.');}\
+            </script><body onload='myFunction()''>")
     if request.method == 'POST':
         if request.form['name']:
             editedBand.name = request.form['name']
@@ -334,10 +365,13 @@ def deleteBand(band_id):
     if 'username' not in login_session:
         return redirect('/login')
     if bandToDelete.user_id != login_session['user_id']:
-        return "<script>function myFunction() {alert('You are not authorized to delete this band. Please create your own band in order to delete.');}</script><body onload='myFunction()''>"
+        return (
+            "<script>function myFunction() {alert('You are not authorized "
+            "to delete this band. Please create your own band in order to "
+            "delete.');}</script><body onload='myFunction()''>")
     if request.method == 'POST':
         session.delete(bandToDelete)
-        if albumsToDelete !=[]:
+        if albumsToDelete != []:
             for i in albumsToDelete:
                 session.delete(i)
         flash('%s Successfully Deleted' % bandToDelete.name)
@@ -346,18 +380,27 @@ def deleteBand(band_id):
     else:
         return render_template('deleteband.html', band=bandToDelete)
 
-# Show albums for a band
 
+# Show albums for a band
 @app.route('/band/<int:band_id>/')
 @app.route('/band/<int:band_id>/albums/')
 def showAlbums(band_id):
     band = session.query(Band).filter_by(id=band_id).one()
     creator = getUserInfo(band.user_id)
     albums = session.query(AlbumItem).filter_by(band_id=band_id).all()
-    if 'username' not in login_session or creator.id != login_session['user_id']:
-        return render_template('publicalbums.html', albums=albums, band=band, creator=creator)
+    if 'username' not in (
+            login_session or creator.id != login_session['user_id']):
+        return render_template(
+            'publicalbums.html',
+            albums=albums,
+            band=band,
+            creator=creator)
     else:
-        return render_template('albums.html', albums=albums, band=band, creator=creator)
+        return render_template(
+            'albums.html',
+            albums=albums,
+            band=band,
+            creator=creator)
 
 
 # Create a new album
@@ -367,9 +410,20 @@ def newAlbum(band_id):
         return redirect('/login')
     band = session.query(Band).filter_by(id=band_id).one()
     if login_session['user_id'] != band.user_id:
-        return "<script>function myFunction() {alert('You are not authorized to add albums  to this band. Please create your own band in order to add albums.');}</script><body onload='myFunction()''>"
+        return (
+            "<script>function myFunction() {alert('You are not authorized "
+            "to add albums to this band. Please create your own band in order "
+            "to add albums.');}</script><body onload='myFunction()''>")
     if request.method == 'POST':
-        newItem = AlbumItem(name=request.form['name'], description=request.form['description'], year=request.form['year'], picture=request.form['picture'], price=request.form['price'], era=request.form['course'], band_id=band_id, user_id=band.user_id)
+        newItem = AlbumItem(
+            name=request.form['name'],
+            description=request.form['description'],
+            year=request.form['year'],
+            picture=request.form['picture'],
+            price=request.form['price'],
+            era=request.form['course'],
+            band_id=band_id,
+            user_id=band.user_id)
         session.add(newItem)
         session.commit()
         flash('New Album %s Successfully Created' % (newItem.name))
@@ -377,17 +431,20 @@ def newAlbum(band_id):
     else:
         return render_template('newalbumitem.html', band_id=band_id)
 
+
 # Edit an album
-
-
-@app.route('/band/<int:band_id>/album/<int:album_id>/edit', methods=['GET', 'POST'])
-def editAlbumItem(band_id, album_id): # start here, rick
+@app.route(
+    '/band/<int:band_id>/album/<int:album_id>/edit', methods=['GET', 'POST'])
+def editAlbumItem(band_id, album_id):
     if 'username' not in login_session:
         return redirect('/login')
     editedAlbum = session.query(AlbumItem).filter_by(id=album_id).one()
     band = session.query(Band).filter_by(id=band_id).one()
     if login_session['user_id'] != band.user_id:
-        return "<script>function myFunction() {alert('You are not authorized to edit albums of this band. Please create your own band in order to edit albums.');}</script><body onload='myFunction()''>"
+        return (
+            "<script>function myFunction() {alert('You are not authorized to"
+            "edit albums of this band. Please create your own band in order "
+            "to edit albums.');}</script><body onload='myFunction()''>")
     if request.method == 'POST':
         if request.form['name']:
             editedAlbum.name = request.form['name']
@@ -406,18 +463,27 @@ def editAlbumItem(band_id, album_id): # start here, rick
         flash('Album Successfully Edited')
         return redirect(url_for('showAlbums', band_id=band_id))
     else:
-        return render_template('editalbumitem.html', band_id=band_id, album_id=album_id, item=editedAlbum)
+        return render_template(
+            'editalbumitem.html',
+            band_id=band_id,
+            album_id=album_id,
+            item=editedAlbum)
 
 
 # Delete an album
-@app.route('/band/<int:band_id>/album/<int:album_id>/delete', methods=['GET', 'POST'])
+@app.route(
+    '/band/<int:band_id>/album/<int:album_id>/delete', methods=['GET', 'POST'])
 def deleteAlbumItem(band_id, album_id):
     if 'username' not in login_session:
         return redirect('/login')
     band = session.query(Band).filter_by(id=band_id).one()
     AlbumToDelete = session.query(AlbumItem).filter_by(id=album_id).one()
     if login_session['user_id'] != band.user_id:
-        return "<script>function myFunction() {alert('You are not authorized to delete albums from this band. Please create your own band in order to delete albums.');}</script><body onload='myFunction()''>"
+        return (
+            "<script>function myFunction() {alert('You are not authorized to"
+            "delete albums from this band. Please create your own band in "
+            "order to delete albums.');}"
+            "</script><body onload='myFunction()''>")
     if request.method == 'POST':
         session.delete(AlbumToDelete)
         session.commit()
