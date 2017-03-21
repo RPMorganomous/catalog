@@ -1,6 +1,6 @@
-#Classic Rock Hall Of Fame Catalog
+# Classic Rock Hall Of Fame Catalog
 
-##Main technologies and methodologies implemented:
+## Main technologies and methodologies implemented:
 * Python 2.7
 * Flask
 * Bootstrap
@@ -15,26 +15,26 @@
 * Google API
 * Facebook API
 
-###This catalog project is a Python module that uses an sqlite database to manage bands and albums from the classic rock genre.  The purpose of this project is to demonstrate aptitude with Create Read Update and Delete database functionality.###
+### This catalog project is a Python module that uses an sqlite database to manage bands and albums from the classic rock genre.  The purpose of this project is to demonstrate aptitude with Create Read Update and Delete database functionality.###
 
 The program is tested by executing project.py.  If all goes well, when you open your browser and point to localhost:8000 you will see this:
 
 ![alt tag](https://github.com/RPMorganomous/catalog/blob/master/static/screenshot.png)
 
-#Follow These Steps To Test The Program
+# Follow These Steps To Test The Program
 (I'm assuming you already have python2.7 installed)
 
-###Install Virtualbox###
+### Install Virtualbox###
 https://www.virtualbox.org/wiki/Downloads
 
-###Install Vagrant###
+### Install Vagrant###
 https://www.vagrantup.com/downloads
 
 Verify that Vagrant is installed and working by typing in the terminal:
 
     $ vagrant -v   # will print out the Vagrant version number
 
-###Clone the Repository###
+### Clone the Repository###
 
 If you don't already have Git installed, [download Git from git-scm.com.](http://git-scm.com/downloads) Install the version for your operating system.
 
@@ -49,7 +49,7 @@ Once you are sure that VirtualBox and Vagrant are installed correctly execute th
     $ cd vagrant
     $ cd catalog
 
-###Verify that these files exist in the newly cloned repository:
+### Verify that these files exist in the newly cloned repository:
 
     --catalog                    #folder containing tournament files
     ----project.py               #file that contains the python functions which 
@@ -60,7 +60,7 @@ Once you are sure that VirtualBox and Vagrant are installed correctly execute th
     --pg_config.sh               #shell script provisioner called by Vagrantfile
                                     that performs configurations
 
-###Launch the Vagrant Box###
+### Launch the Vagrant Box###
 
 VirtualBox is the software that actually runs the VM. [You can download it from virtualbox.org, here.](https://www.virtualbox.org/wiki/Downloads)  Install the *platform package* for your operating system.  You do not need the extension pack or the SDK. You do not need to launch VirtualBox after installing it.
 
@@ -83,13 +83,13 @@ This will give you a directory named **oauth** complete with the source code for
 
 Using the terminal, change directory to oauth (**cd oauth**), then type **vagrant up** to launch your virtual machine.
 
-###Change Directory To The Catalog Directory###
+### Change Directory To The Catalog Directory###
 
     $ cd /
     $ cd vagrant
     $ cd catalog
 
-###Initialize the database###
+### Initialize the database###
 
 (Optional unless you want to use the pre-configured database.  Otherwise, you can delete bandalbumswithusers.db and recreate it using the following commands)
 
@@ -101,7 +101,7 @@ You should see this result:
 
     Bands and albums successfully imported!
 
-###Run the application###
+### Run the application###
 
     $ python project.py
 
@@ -109,7 +109,7 @@ You should see this result:
     Use the LOGIN option at the upper right of your screen to log in using Google or Facebook.  Upon first login you will
     be added as a new user with permission to edit any bands or albums you create.
     
-###JSON output###
+### JSON output###
 
     This application will produce JSON files by directing your browser to the following urls:
     /band/<int:band_id>/albums/JSON for all albums by a specific band
@@ -117,20 +117,20 @@ You should see this result:
     /albums/JSON for all albums in the db
     /bands/JSON for all bands in the db
 
-###Shutdown the application###
+### Shutdown the application###
 
     ctrl+C
 
-###Shutdown Vagrant machine###
+### Shutdown Vagrant machine###
 
     $ vagrant halt
 
 
-###Destroy the Vagrant machine###
+### Destroy the Vagrant machine###
 
     $ vagrant destroy
 
-###Coming Soon - UPGRADES###
+### Coming Soon - UPGRADES###
 * More detail on bands and albums
 * Gear and performance tips to reproduce the music you love
 * Option to order the albums from Amazon.com
