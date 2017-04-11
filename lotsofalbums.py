@@ -19,7 +19,7 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 
-Create dummy user
+# Create dummy user
 User1 = User(
        name="Metal Hunger",
        email="hungry@metal.com",
